@@ -23,7 +23,7 @@ my_desc$set_version("0.0.0.9000")
 # The title of your package
 my_desc$set(Title = "Simple Consul Key/Value Store Wrapper")
 # The description of your package
-my_desc$set(Description = "A Simple #Consul Key/Value Store Wrapper for #R. Fetch single or multiple key/value.")
+my_desc$set(Description = "R Wrapper for Consul Key/Value Store. Fetch single or multiple key/value.")
 # The urls
 my_desc$set("URL", "http://https://github.com/tmasjc/rConsulKV.git")
 my_desc$set("BugReports", "https://github.com/tmasjc/rConsulKV/issues")

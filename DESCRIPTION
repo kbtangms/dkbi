@@ -6,8 +6,8 @@ Authors@R:
            family = "Jc",
            role = c("cre", "aut"),
            email = "thomas.jcng@gmail.com")
-Description: A Simple #Consul Key/Value Store Wrapper for #R.
-    Fetch single or multiple key/value.
+Description: R Wrapper for Consul Key/Value Store. Fetch single
+    or multiple key/value.
 License: MIT + file LICENSE
 URL: http://https://github.com/tmasjc/rConsulKV.git
 BugReports: https://github.com/tmasjc/rConsulKV/issues

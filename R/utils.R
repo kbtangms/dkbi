@@ -13,12 +13,15 @@ check_status <- function(res){
 #' @return
 #' Decoded value retrieved from Consul. 'NA' if empty.
 #'
+#' @importFrom magrittr %>%
+#' @importFrom httr GET content
+#' @importFrom base64enc base64decode
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' get_kv("fruit/apple")
 #' }
-#'
-#' @importFrom magrittr %>%
 #'
 get_kv <- function(key) {
 

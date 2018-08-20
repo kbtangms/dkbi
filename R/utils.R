@@ -220,6 +220,7 @@ est_mongo_conn <- function(mongo_id) {
 #' @return
 #' Boolean - True if success, False if failure
 #'
+#'
 #' @export
 #'
 init_config <- function(path) {
@@ -227,9 +228,14 @@ init_config <- function(path) {
     # filepath
     file <- sprintf("%s/config.R", path)
 
+    # check if path exists
+    if(!dir.exists(path)) {
+        stop("Path not found.")
+    }
+
     # not overwrite if file exists in path
     if(file.exists(file)) {
-        message("File exists in %s. Not proceeding.", path)
+        message(sprintf("File exists in %s. Not proceeding.", path))
         return(FALSE)
     }
     # read from template

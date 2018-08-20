@@ -1,4 +1,5 @@
 # Consul Configuration ----------------------------------------------------
+library(curl)
 
 # init
 consul <- new.env()

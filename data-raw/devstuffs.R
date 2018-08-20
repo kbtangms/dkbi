@@ -9,7 +9,7 @@ unlink("DESCRIPTION")
 my_desc <- description$new("!new")
 
 # Set your package name
-my_desc$set("Package", "rConsulKV")
+my_desc$set("Package", "dkbi")
 
 #Set your name
 my_desc$set("Authors@R", "person('Thomas', 'Jc', email = 'thomas.jcng@gmail.com', role = c('cre', 'aut'))")
@@ -21,12 +21,12 @@ my_desc$del("Maintainer")
 my_desc$set_version("0.0.0.9000")
 
 # The title of your package
-my_desc$set(Title = "Simple Consul Key/Value Store Wrapper")
+my_desc$set(Title = "dkbi")
 # The description of your package
-my_desc$set(Description = "R Wrapper for Consul Key/Value Store. Fetch single or multiple key/value.")
+my_desc$set(Description = "A general purpose package for Dankegongyu BI unit.")
 # The urls
-my_desc$set("URL", "http://https://github.com/tmasjc/rConsulKV.git")
-my_desc$set("BugReports", "https://github.com/tmasjc/rConsulKV/issues")
+my_desc$set("URL", "http://https://github.com/tmasjc/dkbi.git")
+my_desc$set("BugReports", "https://github.com/tmasjc/dkbi/issues")
 # Save everyting
 my_desc$write(file = "DESCRIPTION")
 

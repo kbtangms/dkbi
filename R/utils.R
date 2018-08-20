@@ -209,3 +209,38 @@ est_mongo_conn <- function(mongo_id) {
     return(c)
 
 }
+
+
+# Create Config.R from Template -------------------------------------------
+
+#' Create template for 'Config.R'
+#'
+#' @param path Path to generate template
+#'
+#' @return
+#' Boolean - True if success, False if failure
+#'
+#' @export
+#'
+init_config <- function(path) {
+
+    # filepath
+    file <- sprintf("%s/config.R", path)
+
+    # not overwrite if file exists in path
+    if(file.exists(file)) {
+        message("File exists in %s. Not proceeding.", path)
+        return(FALSE)
+    }
+    # read from template
+    template <- readLines(system.file("template", "config.R", package = "dkbi"))
+
+    # export
+    write(template, file)
+
+    # return boolean
+    file.exists(file)
+
+}
+
+

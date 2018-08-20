@@ -42,6 +42,7 @@ use_package("jsonlite")
 use_package("attempt")
 use_package("magrittr")
 use_package("base64enc")
+use_package("RMySQL")
 
 # Clean your description
 use_tidy_description()

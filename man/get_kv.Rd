@@ -3,7 +3,7 @@
 \name{get_kv}
 \alias{get_kv}
 \alias{get_batch_kv}
-\title{Obtain key/value from Consul}
+\title{Obtain key / value from Consul}
 \usage{
 get_kv(key)
 
@@ -21,7 +21,7 @@ All but path name will be coersed into a list.}
 Decoded value retrieved from Consul. 'NA' if empty.
 }
 \description{
-Obtain key/value from Consul
+See https://www.consul.io/ for more about Consul.
 }
 \examples{
 \dontrun{

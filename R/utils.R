@@ -1,12 +1,7 @@
-#' @importFrom httr status_code
-check_status <- function(res){
-    stop_if_not(.x = status_code(res),
-                .p = ~ .x == 200,
-                msg = "The API returned an error")
-}
+# Read from Consul --------------------------------------------------------
 
-
-#' Obtain key/value from Consul
+#' Obtain key / value from Consul
+#' @description See https://www.consul.io/ for more about Consul.
 #'
 #' @param key Key name to retrieve
 #' @param path Path name to retrieve
@@ -120,5 +115,97 @@ get_batch_kv <- function(path, ...) {
 
     # return
     vals
+
+}
+
+
+# Establish Connection to Common Database ---------------------------------
+
+#' Establish connection to MySQL database
+#' @description Fetch credentials from Consul k/v store and establish connection to MySQL.
+#'
+#' @param mysql_id Database to connect to
+#' @param drv MySQL driver. Default RMySQL::MySQL
+#'
+#' @return
+#' Database connection if successful.
+#'
+#' @importFrom RMySQL MySQL
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' est_mysql_conn('somedb')
+#' }
+
+est_mysql_conn <- function(mysql_id, drv = MySQL()) {
+
+    # required parameters to establish connection
+    params <- c("username", "password", "host", "port", "database")
+
+    # fetch credentials
+    db_config <- get_batch_kv(mysql_id, params)
+
+    # check if all required params are specified
+    if(!all(params %in% names(db_config))){
+        stop("One or more MySQL parameters is missing")
+    }
+
+    # test connection here
+
+    # est conn
+    c <- DBI::dbConnect(
+        drv,
+        user = db_config[["username"]],
+        password = db_config[["password"]],
+        host = db_config[["host"]],
+        port = as.numeric(db_config[["port"]]),
+        db = mysql_id
+    )
+
+    # return connection
+    return(c)
+
+}
+
+#' Establish connection to MongoDB
+#' @description Fetch credentials from Consul k/v store and establish connection to MySQL.
+#'
+#' @param mysql_id Database to connect to
+#'
+#' @return
+#' Database connection if successful.
+#'
+#' @importFrom mongolite mongo
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' est_mongo_conn('somedb')
+#' }
+est_mongo_conn <- function(mongo_id) {
+
+    # required parameters to establish connection
+    params <- c("username", "password", "host", "port", "database", "collection")
+
+    # fetch mongo credentials
+    mg_config <- get_batch_kv(mongo_id, params)
+
+    # check if the credentials are specified
+    if(!all(params %in% names(mg_config))){
+        stop("One or more Mongo parameters is missing")
+    }
+
+    # est conn
+    c <- mongo(
+        collection = mg_config$collection,
+        url = with(mg_config,
+                   # mongodb://username:password@host:port
+                   sprintf("mongodb://%s:%s@%s:%d/", username, password, host, as.numeric(port))),
+        db = mg_config$database
+    )
+
+    # return connection
+    return(c)
 
 }

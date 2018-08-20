@@ -2,22 +2,38 @@
 % Please edit documentation in R/utils.R
 \name{get_kv}
 \alias{get_kv}
-\title{Get a single key/value from Consul}
+\alias{get_batch_kv}
+\title{Obtain key/value from Consul}
 \usage{
 get_kv(key)
+
+get_batch_kv(path, ...)
 }
 \arguments{
-\item{key}{which key to retrieve}
+\item{key}{Key name to retrieve}
+
+\item{path}{Path name to retrieve}
+
+\item{...}{One or many keys under path to retrieve.
+All but path name will be coersed into a list.}
 }
 \value{
 Decoded value retrieved from Consul. 'NA' if empty.
 }
 \description{
-Get a single key/value from Consul
+Obtain key/value from Consul
 }
 \examples{
 \dontrun{
+
+# Return a string
 get_kv("fruit/apple")
+
+# Return a list of values
+get_batch_kv("fruit", c("apple", "banana", "coconut"))
+# This works too
+get_batch_kv("fruit", "apple", "banana", "coconut")
+
 }
 
 }

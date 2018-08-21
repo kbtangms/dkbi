@@ -1,3 +1,18 @@
+# Databases Declaration ---------------------------------------------------
+
+# init
+db <- new.env()
+#db$forecast <- "Forecast"
+
+
+
+# API Declaration ---------------------------------------------------------
+
+# init
+api <- new.env()
+#api$pricing <- "some_pricing_api"
+
+
 # Consul Configuration ----------------------------------------------------
 library(curl)
 
@@ -16,23 +31,6 @@ if (is.null(nslookup(Sys.getenv("consul.host"), error = FALSE))) {
 # not changing port and swagger from .Renviron
 consul$port = Sys.getenv("consul.port")
 consul$swagger = Sys.getenv("consul.swagger")
-
-
-# Databases Declaration ---------------------------------------------------
-
-# init
-db <- new.env()
-#db$forecast <- "Forecast"
-
-
-
-# API Declaration ---------------------------------------------------------
-
-# init
-api <- new.env()
-#api$pricing <- "some_pricing_api"
-
-
 # Validation Token If Needed ----------------------------------------------
 
 # function as a service

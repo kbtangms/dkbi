@@ -4,10 +4,12 @@
 \alias{init_config}
 \title{Create template for 'Config.R'}
 \usage{
-init_config(path)
+init_config(path, overwrite = FALSE)
 }
 \arguments{
 \item{path}{Path to generate template}
+
+\item{overwrite}{Overwrite? Default = FALSE}
 }
 \value{
 Boolean - True if success, False if failure

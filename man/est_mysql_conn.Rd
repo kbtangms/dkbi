@@ -16,6 +16,7 @@ Database connection if successful.
 }
 \description{
 Fetch credentials from Consul k/v store and establish connection to MySQL.
+Required values from k/v store are username, password, host, port, database
 }
 \examples{
 \dontrun{

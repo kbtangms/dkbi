@@ -123,6 +123,7 @@ get_batch_kv <- function(path, ...) {
 
 #' Establish connection to MySQL database
 #' @description Fetch credentials from Consul k/v store and establish connection to MySQL.
+#' Required values from k/v store are username, password, host, port, database
 #'
 #' @param mysql_id Database to connect to
 #' @param drv MySQL driver. Default RMySQL::MySQL
@@ -160,7 +161,7 @@ est_mysql_conn <- function(mysql_id, drv = MySQL()) {
         password = db_config[["password"]],
         host = db_config[["host"]],
         port = as.numeric(db_config[["port"]]),
-        db = mysql_id
+        db = db_config[["database"]]
     )
 
     # return connection
@@ -170,6 +171,7 @@ est_mysql_conn <- function(mysql_id, drv = MySQL()) {
 
 #' Establish connection to MongoDB
 #' @description Fetch credentials from Consul k/v store and establish connection to MySQL.
+#' Required values from k/v store are username, password, host, port, database, collection.
 #'
 #' @param mysql_id Database to connect to
 #'
@@ -216,6 +218,7 @@ est_mongo_conn <- function(mongo_id) {
 #' Create template for 'Config.R'
 #'
 #' @param path Path to generate template
+#' @param overwrite Overwrite? Default = FALSE
 #'
 #' @return
 #' Boolean - True if success, False if failure
@@ -223,7 +226,7 @@ est_mongo_conn <- function(mongo_id) {
 #'
 #' @export
 #'
-init_config <- function(path) {
+init_config <- function(path, overwrite = FALSE) {
 
     # filepath
     file <- sprintf("%s/config.R", path)
@@ -233,16 +236,19 @@ init_config <- function(path) {
         stop("Path not found.")
     }
 
-    # not overwrite if file exists in path
-    if(file.exists(file)) {
-        message(sprintf("File exists in %s. Not proceeding.", path))
-        return(FALSE)
-    }
     # read from template
     template <- readLines(system.file("template", "config.R", package = "dkbi"))
 
-    # export
-    write(template, file)
+    if(file.exists(file)) {
+        # not overwrite if file exists in path
+        if(!overwrite) {
+            message(sprintf("File exists in %s. Not proceeding.", path))
+            return(FALSE)
+        } else {
+            # export
+            write(template, file)
+        }
+    }
 
     # return boolean
     file.exists(file)

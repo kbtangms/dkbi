@@ -239,16 +239,14 @@ init_config <- function(path, overwrite = FALSE) {
     # read from template
     template <- readLines(system.file("template", "config.R", package = "dkbi"))
 
-    if(file.exists(file)) {
-        # not overwrite if file exists in path
-        if(!overwrite) {
-            message(sprintf("File exists in %s. Not proceeding.", path))
-            return(FALSE)
-        } else {
-            # export
-            write(template, file)
-        }
+    # not overwrite if file exists in path and overwrite is set to FALSE
+    if(file.exists(file) & !overwrite) {
+        message(sprintf("File exists in %s. Not proceeding.", path))
+        return(FALSE)
     }
+
+    # export
+    write(template, file)
 
     # return boolean
     file.exists(file)

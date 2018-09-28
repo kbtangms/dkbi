@@ -219,7 +219,7 @@ est_mongo_conn <- function(db) {
 #' Please modify content accordingly.
 #'
 #' @param name script selection
-#' @param path Path to generate template
+#' @param path Path to generate template. Default being the current directory.
 #' @param overwrite Overwrite? Default = FALSE
 #'
 #' @return
@@ -227,41 +227,47 @@ est_mongo_conn <- function(db) {
 #'
 #' @export
 #' @rdname init_script
-init_script <- function(name, path, overwrite = FALSE) {
+init_script <- function(name, path = ".", overwrite = FALSE) {
+
+    # clean up '/' in path if any
+    path <- gsub(pattern = "\\/", replacement = "", x = path)
 
     # check if path exists
     if(!dir.exists(path)) {
         stop("Path not found.")
     }
 
-    # file
+    # declare R type
     f <- paste0(name, ".R")
 
     # read from template
     template <- readLines(system.file("template", f, package = "dkbi"))
 
+    # path + file
+    p <- paste0(path, "/", f)
+
     # not overwrite if file exists in path and overwrite is set to FALSE
-    if(file.exists(f) & !overwrite) {
+    if(file.exists(p) & !overwrite) {
         message(sprintf("File exists in %s. Not proceeding.", path))
         return(FALSE)
     }
 
     # export
-    write(template, f)
+    write(template, p)
 
     # return boolean
-    file.exists(f)
+    file.exists(p)
 
 }
 
 #' @export
 #' @rdname init_script
-init_config <- function(path, overwrite = FALSE) {
+init_config <- function(path = ".", overwrite = FALSE) {
     init_script("config", path, overwrite)
 }
 
 #' @export
 #' @rdname init_script
-init_plumber <- function(path, overwrite = FALSE) {
+init_plumber <- function(path = ".", overwrite = FALSE) {
     init_script("plumber", path, overwrite)
 }

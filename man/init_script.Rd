@@ -6,16 +6,16 @@
 \alias{init_plumber}
 \title{Initiate Commonly Used Script}
 \usage{
-init_script(name, path, overwrite = FALSE)
+init_script(name, path = ".", overwrite = FALSE)
 
-init_config(path, overwrite = FALSE)
+init_config(path = ".", overwrite = FALSE)
 
-init_plumber(path, overwrite = FALSE)
+init_plumber(path = ".", overwrite = FALSE)
 }
 \arguments{
 \item{name}{script selection}
 
-\item{path}{Path to generate template}
+\item{path}{Path to generate template. Default being the current directory.}
 
 \item{overwrite}{Overwrite? Default = FALSE}
 }

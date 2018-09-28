@@ -1,14 +1,22 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-dkbi
-====
 
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# dkbi
 
-A general purpose package for Dankegongyu business intelligence unit.
+A general purpose package for Dankegongyu business intelligence unit. 
 
-Installation
-------------
+## Installation
 
 You can install the development version of dkbi from internal RStudio package manager.
 
@@ -16,24 +24,22 @@ You can install the development version of dkbi from internal RStudio package ma
 install.packages("dkbi", repos = "<internal-cran>")
 ```
 
-Required Variables
-------------------
+## Required Variables
 
 By default, `dkbi` will look for an `consul` object in your R global environment. It is recommended to set the following system variables in your `.Renviron` file.
 
-``` r
+```{r, eval=FALSE}
 consul.host = "some host"
 consul.port = "some port"
 consul.swagger = "some swagger"
 consul.secret = "some secret"
 ```
 
-Common Workflow
----------------
+## Common Workflow
 
 `dkbi` helps to fetch values from KV store and make connection to databases.
 
-``` r
+```{r example, eval=FALSE}
 library(dkbi)
 
 # initiate config.R to specific path
@@ -46,16 +52,16 @@ source("R/config.R")
 est_mysql_conn("Forecast")
 ```
 
-``` bash
+```bash
 <MySQLConnection:0,0>
 ```
 
-``` r
+```{r, eval=FALSE}
 # fetch parameters from KV store
 get_batch_kv("some_api_params", "host", "port", "swagger")
 ```
 
-``` bash
+```bash
 $host
 [1] "some_api_host"
 
@@ -66,12 +72,12 @@ $swagger
 [1] "some_api_swagger"
 ```
 
-Available Commands
-------------------
+## Available Commands
 
-``` r
+```{r}
 library(dkbi)
 ls('package:dkbi')
-#> [1] "est_mongo_conn" "est_mysql_conn" "get_batch_kv"   "get_kv"        
-#> [5] "init_config"    "init_plumber"   "init_script"
 ```
+
+
+

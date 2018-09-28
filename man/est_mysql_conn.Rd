@@ -2,24 +2,33 @@
 % Please edit documentation in R/utils.R
 \name{est_mysql_conn}
 \alias{est_mysql_conn}
-\title{Establish connection to MySQL database}
+\alias{est_mongo_conn}
+\title{Establish Connection to Common Databases}
 \usage{
-est_mysql_conn(mysql_id, drv = MySQL())
+est_mysql_conn(db, drv = MySQL())
+
+est_mongo_conn(db)
 }
 \arguments{
-\item{mysql_id}{Database to connect to}
+\item{db}{Database to connect to}
 
-\item{drv}{MySQL driver. Default RMySQL::MySQL}
+\item{drv}{Driver (MySQL only). Default RMySQL::MySQL}
 }
 \value{
 Database connection if successful.
 }
 \description{
-Fetch credentials from Consul k/v store and establish connection to MySQL.
-Required values from k/v store are username, password, host, port, database
+Fetch credentials from Consul K/V store and establish connection to database.
+
+Required values for respective database:
+
+  \code{MySQL} - username, password, host, port, database
+
+  \code{MongoDB} - username, password, host, port, database, collection
 }
 \examples{
 \dontrun{
-est_mysql_conn('somedb')
+est_mysql_conn('mysql_database')
+est_mongo_conn('mongo_database')
 }
 }

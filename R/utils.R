@@ -1,6 +1,6 @@
 # Read from Consul --------------------------------------------------------
 
-#' Obtain key / value from Consul
+#' Obtain Key / Value from Consul
 #' @description See https://www.consul.io/ for more about Consul.
 #'
 #' @param key Key name to retrieve
@@ -121,41 +121,47 @@ get_batch_kv <- function(path, ...) {
 
 # Establish Connection to Common Database ---------------------------------
 
-#' Establish connection to MySQL database
-#' @description Fetch credentials from Consul k/v store and establish connection to MySQL.
-#' Required values from k/v store are username, password, host, port, database
+#' Establish Connection to Common Databases
 #'
-#' @param mysql_id Database to connect to
-#' @param drv MySQL driver. Default RMySQL::MySQL
+#' @name est_mysql_conn
+#' @description Fetch credentials from Consul K/V store and establish connection to database.
+#'
+#' Required values for respective database:
+#'
+#'   \code{MySQL} - username, password, host, port, database
+#'
+#'   \code{MongoDB} - username, password, host, port, database, collection
+#'
+#' @param db Database to connect to
+#' @param drv Driver (MySQL only). Default RMySQL::MySQL
 #'
 #' @return
 #' Database connection if successful.
 #'
+#' @importFrom DBI dbConnect
 #' @importFrom RMySQL MySQL
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' est_mysql_conn('somedb')
+#' est_mysql_conn('mysql_database')
+#' est_mongo_conn('mongo_database')
 #' }
-
-est_mysql_conn <- function(mysql_id, drv = MySQL()) {
+est_mysql_conn <- function(db, drv = MySQL()) {
 
     # required parameters to establish connection
     params <- c("username", "password", "host", "port", "database")
 
     # fetch credentials
-    db_config <- get_batch_kv(mysql_id, params)
+    db_config <- get_batch_kv(db, params)
 
     # check if all required params are specified
     if(!all(params %in% names(db_config))){
         stop("One or more MySQL parameters is missing")
     }
 
-    # test connection here
-
     # est conn
-    c <- DBI::dbConnect(
+    c <- dbConnect(
         drv,
         user = db_config[["username"]],
         password = db_config[["password"]],
@@ -169,29 +175,16 @@ est_mysql_conn <- function(mysql_id, drv = MySQL()) {
 
 }
 
-#' Establish connection to MongoDB
-#' @description Fetch credentials from Consul k/v store and establish connection to MySQL.
-#' Required values from k/v store are username, password, host, port, database, collection.
-#'
-#' @param mysql_id Database to connect to
-#'
-#' @return
-#' Database connection if successful.
-#'
 #' @importFrom mongolite mongo
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' est_mongo_conn('somedb')
-#' }
-est_mongo_conn <- function(mongo_id) {
+#' @rdname est_mysql_conn
+est_mongo_conn <- function(db) {
 
     # required parameters to establish connection
     params <- c("username", "password", "host", "port", "database", "collection")
 
     # fetch mongo credentials
-    mg_config <- get_batch_kv(mongo_id, params)
+    mg_config <- get_batch_kv(db, params)
 
     # check if the credentials are specified
     if(!all(params %in% names(mg_config))){
@@ -213,44 +206,62 @@ est_mongo_conn <- function(mongo_id) {
 }
 
 
-# Create Config.R from Template -------------------------------------------
+# Create Common Script from Template -------------------------------------------
 
-#' Create template for 'Config.R'
+#' Initiate Commonly Used Script
 #'
+#' @description Initiate commonly used script:
+#'
+#' \code{init_config} - To declare database and API configuration
+#'
+#' \code{init_plumber} - To convert R code to web API
+#'
+#' Please modify content accordingly.
+#'
+#' @param name script selection
 #' @param path Path to generate template
 #' @param overwrite Overwrite? Default = FALSE
 #'
 #' @return
 #' Boolean - True if success, False if failure
 #'
-#'
 #' @export
-#'
-init_config <- function(path, overwrite = FALSE) {
-
-    # filepath
-    file <- sprintf("%s/config.R", path)
+#' @rdname init_script
+init_script <- function(name, path, overwrite = FALSE) {
 
     # check if path exists
     if(!dir.exists(path)) {
         stop("Path not found.")
     }
 
+    # file
+    f <- paste0(name, ".R")
+
     # read from template
-    template <- readLines(system.file("template", "config.R", package = "dkbi"))
+    template <- readLines(system.file("template", f, package = "dkbi"))
 
     # not overwrite if file exists in path and overwrite is set to FALSE
-    if(file.exists(file) & !overwrite) {
+    if(file.exists(f) & !overwrite) {
         message(sprintf("File exists in %s. Not proceeding.", path))
         return(FALSE)
     }
 
     # export
-    write(template, file)
+    write(template, f)
 
     # return boolean
-    file.exists(file)
+    file.exists(f)
 
 }
 
+#' @export
+#' @rdname init_script
+init_config <- function(path, overwrite = FALSE) {
+    init_script("config", path, overwrite)
+}
 
+#' @export
+#' @rdname init_script
+init_plumber <- function(path, overwrite = FALSE) {
+    init_script("plumber", path, overwrite)
+}

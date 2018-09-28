@@ -1,9 +1,10 @@
+library(curl)
+
 # Databases Declaration ---------------------------------------------------
 
 # init
 db <- new.env()
 #db$forecast <- "Forecast"
-
 
 
 # API Declaration ---------------------------------------------------------
@@ -14,7 +15,6 @@ api <- new.env()
 
 
 # Consul Configuration ----------------------------------------------------
-library(curl)
 
 # init
 consul <- new.env()
@@ -31,7 +31,8 @@ if (is.null(nslookup(Sys.getenv("consul.host"), error = FALSE))) {
 # not changing port and swagger from .Renviron
 consul$port = Sys.getenv("consul.port")
 consul$swagger = Sys.getenv("consul.swagger")
-# Validation Token If Needed ----------------------------------------------
+
+# Token Validation If Needed ----------------------------------------------
 
 # function as a service
 validate_token <- function(token) {

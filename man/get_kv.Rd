@@ -3,7 +3,7 @@
 \name{get_kv}
 \alias{get_kv}
 \alias{get_batch_kv}
-\title{Obtain key / value from Consul}
+\title{Obtain Key / Value from Consul}
 \usage{
 get_kv(key)
 
